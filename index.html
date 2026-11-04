@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Лира — голосовой помощник</title>
+<meta name="description" content="Голосовой помощник с собственной обученной моделью понимания команд">
+<meta name="theme-color" content="#0E7C66">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Unbounded:wght@500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <div class="logo" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    <div>
+      <h1 id="assistantName">Лира</h1>
+      <p class="sub">голосовой помощник</p>
+    </div>
+  </div>
+  <div class="status">
+    <span class="pill" id="pillModel" title="Модель понимания команд">модель: загрузка…</span>
+    <span class="pill" id="pillServer" title="Локальный сервер для запуска программ">сервер: проверка…</span>
+    <button class="install" id="btnInstall" hidden>Установить приложение</button>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button role="tab" class="tab" aria-selected="true" data-view="chat">Помощник</button>
+    <button role="tab" class="tab" aria-selected="false" data-view="train">Обучение модели</button>
+    <button role="tab" class="tab" aria-selected="false" data-view="settings">Настройки</button>
+  </nav>
+</header>
+
+<!-- ============ Помощник ============ -->
+<main id="view-chat" class="view chat">
+  <section class="log" id="log" aria-live="polite"></section>
+
+  <section class="hints" id="hints">
+    <p class="label">Попробуйте сказать</p>
+    <div class="chips">
+      <button class="chip" data-say="Который час?">Который час?</button>
+      <button class="chip" data-say="Какая погода завтра в Астане?">Какая погода завтра в Астане?</button>
+      <button class="chip" data-say="Открой YouTube">Открой YouTube</button>
+      <button class="chip" data-say="Запусти калькулятор">Запусти калькулятор</button>
+      <button class="chip" data-say="Что такое информационная система?">Что такое информационная система?</button>
+      <button class="chip" data-say="Найди в интернете рецепт плова">Найди рецепт плова</button>
+      <button class="chip" data-say="Что ты умеешь?">Что ты умеешь?</button>
+    </div>
+  </section>
+
+  <footer class="dock">
+    <div class="interim" id="interim" aria-live="polite"></div>
+    <div class="dock-row">
+      <form id="textForm" class="textform">
+        <label for="textInput" class="visually-hidden">Команда текстом</label>
+        <input id="textInput" type="text" autocomplete="off" placeholder="Скажите или напишите команду">
+        <button type="submit" class="send" aria-label="Отправить">↵</button>
+      </form>
+      <button id="btnMic" class="mic" data-state="idle" aria-label="Нажмите и говорите">
+        <span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        <svg class="mic-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" fill="none" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="dock-meta">
+      <label class="switch"><input type="checkbox" id="wakeToggle"><span></span> Слушать постоянно (обращение по имени)</label>
+      <span id="micHint" class="muted">Пробел или кнопка микрофона — начать запись</span>
+    </div>
+  </footer>
+</main>
+
+<!-- ============ Обучение ============ -->
+<main id="view-train" class="view train" hidden>
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h2>Модель понимания команд</h2>
+        <p class="muted">Softmax-регрессия (однослойная нейросеть) на признаках TF-IDF: слова, биграммы, символьные триграммы.</p>
+      </div>
+      <button class="btn primary" id="btnRetrain">Переобучить модель</button>
+    </div>
+    <div class="metrics" id="metrics"></div>
+    <p class="muted small" id="trainStatus"></p>
+  </section>
+
+  <section class="panel">
+    <h3>Кривая обучения</h3>
+    <div class="chart-wrap"><canvas id="lossChart" height="220"></canvas></div>
+    <div class="legend"><span class="lg loss"></span> функция потерь (cross-entropy) <span class="lg acc"></span> точность на обучающей выборке</div>
+  </section>
+
+  <section class="panel">
+    <h3>Проверить фразу</h3>
+    <form id="probeForm" class="probe">
+      <label for="probeInput" class="visually-hidden">Фраза для проверки</label>
+      <input id="probeInput" type="text" value="подскажи какая погода будет завтра" autocomplete="off">
+      <button class="btn" type="submit">Классифицировать</button>
+    </form>
+    <div id="probeOut" class="probs"></div>
+  </section>
+
+  <section class="panel grid2">
+    <div class="minw0">
+      <h3>Качество по классам (тестовая выборка)</h3>
+      <div class="scroll"><table class="tbl" id="classTable"></table></div>
+    </div>
+    <div class="minw0">
+      <h3>Матрица ошибок</h3>
+      <div class="scroll"><table class="cm" id="confusion"></table></div>
+      <p class="muted small">Строки — истинный класс, столбцы — предсказанный.</p>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h3>Дообучение на своих примерах</h3>
+    <p class="muted">Добавьте фразу и выберите намерение. Примеры сохраняются в браузере и учитываются при переобучении. Исправить ответ можно и прямо в чате.</p>
+    <form id="exampleForm" class="example">
+      <label for="exText" class="visually-hidden">Фраза</label>
+      <input id="exText" type="text" placeholder="Например: подскажи прогноз" autocomplete="off">
+      <label for="exIntent" class="visually-hidden">Намерение</label>
+      <select id="exIntent"></select>
+      <button class="btn" type="submit">Добавить</button>
+    </form>
+    <ul class="examples" id="userExamples"></ul>
+  </section>
+
+  <section class="panel">
+    <h3>Обучающая выборка</h3>
+    <div class="dataset" id="datasetView"></div>
+  </section>
+</main>
+
+<!-- ============ Настройки ============ -->
+<main id="view-settings" class="view settings" hidden>
+  <section class="panel form">
+    <div class="field">
+      <label for="setName">Имя помощника (для постоянного режима)</label>
+      <input id="setName" type="text">
+    </div>
+    <div class="field">
+      <label for="setCity">Город по умолчанию для погоды</label>
+      <input id="setCity" type="text">
+    </div>
+    <div class="field">
+      <label for="setVoice">Голос</label>
+      <select id="setVoice"></select>
+    </div>
+    <div class="field">
+      <label for="setRate">Скорость речи: <b id="rateVal"></b></label>
+      <input id="setRate" type="range" min="0.6" max="1.6" step="0.1">
+    </div>
+    <div class="field">
+      <label for="setThreshold">Порог уверенности модели: <b id="thrVal"></b></label>
+      <input id="setThreshold" type="range" min="0.1" max="0.8" step="0.05">
+      <p class="muted small">Если уверенность ниже порога, помощник переспросит, а не будет угадывать.</p>
+    </div>
+    <div class="field">
+      <label class="switch"><input type="checkbox" id="setSpeak"><span></span> Озвучивать ответы</label>
+    </div>
+    <div class="row">
+      <button class="btn" id="btnTestVoice">Проверить голос</button>
+      <button class="btn danger" id="btnReset">Сбросить настройки и свои примеры</button>
+    </div>
+    <p class="muted small" id="resetNote"></p>
+  </section>
+  <section class="panel">
+    <h3>О программе</h3>
+    <p>Распознавание речи — Web Speech API (сервис Google в Chrome/Edge). Синтез речи — встроенные голоса системы. Понимание команд — собственная модель, обученная на {N} примерах. Погода — Open-Meteo, справки — Википедия. Запуск программ — локальный сервер <code>server.py</code>.</p>
+  </section>
+</main>
+
+<script src="data/dataset.js"></script>
+<script src="data/model.js"></script>
+<script src="nlu.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

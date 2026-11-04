@@ -1,0 +1,419 @@
+{
+  "accuracy": 0.8070175438596491,
+  "macroF1": 0.7994941566370137,
+  "perClass": [
+    {
+      "label": "about",
+      "precision": 0.3333333333333333,
+      "recall": 0.3333333333333333,
+      "f1": 0.3333333333333333,
+      "support": 3
+    },
+    {
+      "label": "capabilities",
+      "precision": 1,
+      "recall": 0.75,
+      "f1": 0.8571428571428571,
+      "support": 4
+    },
+    {
+      "label": "date",
+      "precision": 0.75,
+      "recall": 1,
+      "f1": 0.8571428571428571,
+      "support": 3
+    },
+    {
+      "label": "goodbye",
+      "precision": 0.75,
+      "recall": 0.75,
+      "f1": 0.75,
+      "support": 4
+    },
+    {
+      "label": "greeting",
+      "precision": 1,
+      "recall": 0.8,
+      "f1": 0.888888888888889,
+      "support": 5
+    },
+    {
+      "label": "how_are_you",
+      "precision": 1,
+      "recall": 1,
+      "f1": 1,
+      "support": 3
+    },
+    {
+      "label": "open_app",
+      "precision": 0.8571428571428571,
+      "recall": 1,
+      "f1": 0.923076923076923,
+      "support": 6
+    },
+    {
+      "label": "open_site",
+      "precision": 0.8333333333333334,
+      "recall": 0.8333333333333334,
+      "f1": 0.8333333333333334,
+      "support": 6
+    },
+    {
+      "label": "search",
+      "precision": 1,
+      "recall": 1,
+      "f1": 1,
+      "support": 4
+    },
+    {
+      "label": "stop",
+      "precision": 0.5,
+      "recall": 0.5,
+      "f1": 0.5,
+      "support": 4
+    },
+    {
+      "label": "thanks",
+      "precision": 0.75,
+      "recall": 0.75,
+      "f1": 0.75,
+      "support": 4
+    },
+    {
+      "label": "time",
+      "precision": 1,
+      "recall": 1,
+      "f1": 1,
+      "support": 3
+    },
+    {
+      "label": "weather",
+      "precision": 1,
+      "recall": 1,
+      "f1": 1,
+      "support": 4
+    },
+    {
+      "label": "wikipedia",
+      "precision": 0.5,
+      "recall": 0.5,
+      "f1": 0.5,
+      "support": 4
+    }
+  ],
+  "confusion": [
+    [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1
+    ],
+    [
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0,
+      1
+    ],
+    [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      0
+    ],
+    [
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      2
+    ]
+  ],
+  "labels": [
+    "about",
+    "capabilities",
+    "date",
+    "goodbye",
+    "greeting",
+    "how_are_you",
+    "open_app",
+    "open_site",
+    "search",
+    "stop",
+    "thanks",
+    "time",
+    "weather",
+    "wikipedia"
+  ],
+  "errors": [
+    {
+      "text": "салют",
+      "expected": "greeting",
+      "got": "open_site",
+      "p": 0.17595877309873192
+    },
+    {
+      "text": "выключись",
+      "expected": "goodbye",
+      "got": "stop",
+      "p": 0.1909771514382215
+    },
+    {
+      "text": "мерси",
+      "expected": "thanks",
+      "got": "date",
+      "p": 0.11941697102924319
+    },
+    {
+      "text": "что ты такое",
+      "expected": "about",
+      "got": "wikipedia",
+      "p": 0.5933309018273322
+    },
+    {
+      "text": "представься",
+      "expected": "about",
+      "got": "stop",
+      "p": 0.4033396080201956
+    },
+    {
+      "text": "помощь",
+      "expected": "capabilities",
+      "got": "thanks",
+      "p": 0.19617240674261086
+    },
+    {
+      "text": "запусти ютуб",
+      "expected": "open_site",
+      "got": "open_app",
+      "p": 0.6334969098024316
+    },
+    {
+      "text": "расскажи про uml",
+      "expected": "wikipedia",
+      "got": "about",
+      "p": 0.20155394895567388
+    },
+    {
+      "text": "расскажи про москву",
+      "expected": "wikipedia",
+      "got": "about",
+      "p": 0.19535811339466666
+    },
+    {
+      "text": "не нужно",
+      "expected": "stop",
+      "got": "wikipedia",
+      "p": 0.1730530924255363
+    },
+    {
+      "text": "не надо",
+      "expected": "stop",
+      "got": "goodbye",
+      "p": 0.26469642336732485
+    }
+  ],
+  "n": 57,
+  "trainSize": 226,
+  "testSize": 57,
+  "totalSize": 283,
+  "features": 1797
+}
